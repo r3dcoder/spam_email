@@ -1,0 +1,5 @@
+source venv/bin/activate
+sudo lsof -i :5000
+sudo kill <PID>
+python app.py
+
