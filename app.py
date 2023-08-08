@@ -1,3 +1,5 @@
+import pkg_resources
+
 from flask import Flask, render_template, request
 import pickle
 from tensorflow.keras.models import load_model
@@ -11,9 +13,12 @@ tokenizer_path = os.path.join(os.path.dirname(__file__), 'utils', 'tokenizer.pic
 
 # Load the pre-trained model and tokenizer
 model = load_model(model_path)
-with open(tokenizer_path, 'rb') as handle:
-    tokenizer = pickle.load(handle)
-
+try:
+    with open(tokenizer_path, 'rb') as handle:
+        tokenizer = pickle.load(handle)
+except (FileNotFoundError, pickle.UnpicklingError) as e:
+    print(f"Error loading tokenizer: {e}")
+    exit(1)
 
 app = Flask(__name__)
 
@@ -50,6 +55,24 @@ def index():
             return render_template('error.html', error=str(e))
 
     return render_template('form.html')
+
+
+
+def get_version(package_name):
+    try:
+        return pkg_resources.get_distribution(package_name).version
+    except pkg_resources.DistributionNotFound:
+        return "Not installed"
+
+ 
+# Example usage
+print(f"Python version: {get_version('python')}")
+print(f"TensorFlow version: {get_version('tensorflow')}")
+print(f"Keras version: {get_version('keras')}")
+print(f"numpy version: {get_version('numpy')}")
+print(f"pandas version: {get_version('pandas')}")
+print(f"Flask version: {get_version('Flask')}")
+print(f"scikit-learn version: {get_version('scikit-learn')}")
 
 if __name__ == '__main__':
     app.run(debug=True)
