@@ -2,10 +2,16 @@ from flask import Flask, render_template, request
 import pickle
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+import os
+
+# Define the path to the model and tokenizer
+model_path = os.path.join(os.path.dirname(__file__), 'models', 'spam_detection_model.h5')
+tokenizer_path = os.path.join(os.path.dirname(__file__), 'utils', 'tokenizer.pickle')
+
 
 # Load the pre-trained model and tokenizer
-model = load_model('models/spam_detection_model.h5')
-with open('utils/tokenizer.pickle', 'rb') as handle:
+model = load_model(model_path)
+with open(tokenizer_path, 'rb') as handle:
     tokenizer = pickle.load(handle)
 
 
