@@ -10,7 +10,7 @@ import os
 model_path = os.path.join(os.path.dirname(__file__), 'models', 'spam_detection_model.h5')
 tokenizer_path = os.path.join(os.path.dirname(__file__), 'utils', 'tokenizer.pickle')
 
-
+ 
 # Load the pre-trained model and tokenizer
 model = load_model(model_path)
 try:
@@ -75,6 +75,7 @@ print(f"Flask version: {get_version('Flask')}")
 print(f"scikit-learn version: {get_version('scikit-learn')}")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run(host="0.0.0.0", port=8000)
 
  
